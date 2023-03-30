@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User,AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 # Create your models here.
 
@@ -51,4 +53,15 @@ class Location(models.Model):
         return f"{self.street_address}, {self.area}, {self.county}, {self.postal_code}"
 
 class RateandReview(models.Model):
-    pass
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    service_provider = models.ForeignKey(ServiceProvider, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    review = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Rate and Reviews"
+
+    def __str__(self):
+        return f"{self.user} rated {self.service_provider.name}'s {self.service.name} {self.rating} stars on {self.created_at}"

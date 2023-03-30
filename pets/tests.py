@@ -58,6 +58,7 @@ class BookingModelTest(TestCase):
         booking = Booking.objects.get(id=1)
         self.assertIsNotNone(booking.created_at)
 
+#Location model tests
 class LocationModelTest(TestCase):
     '''In the test for the Location model, I used a class method setUpClass() to set up the required data for the tests to run. This is because each test method in the test class should be independent and not rely on data created in another test method.
     Using setUpClass() ensures that the data is created only once before any of the test methods are run, which makes the tests faster and more efficient. Additionally, if there are a lot of tests that require the same setup, using setUpClass() can help reduce code duplication.'''
@@ -111,3 +112,19 @@ class LocationModelTest(TestCase):
         location = Location.objects.get(id=1)
         expected_object_name = f"{location.street_address}, {location.area}, {location.county}, {location.postal_code}"
         self.assertEqual(str(location), expected_object_name)
+
+#RateandReview model tests
+class RateandReviewModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        User = get_user_model()
+        user = User.objects.create_user(username='user', password='password')
+        provider = ServiceProvider.objects.create(name='provider')
+        service = Service.objects.create(name='service', provider=provider)
+        RateandReview.objects.create(user=user, service_provider=provider, service=service, rating=4, review='Great service!')
+
+    '''tests the __str__ method of the RateandReview model to ensure that it returns the expected string representation.'''
+    def test_str_method(self):
+        review = RateandReview.objects.get(id=1)
+        expected_str = f"{review.user} rated {review.service_provider.name}'s {review.service.name} {review.rating} stars on {review.created_at}"
+        self.assertEqual(str(review), expected_str)

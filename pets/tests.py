@@ -1,6 +1,7 @@
 from django.test import TestCase
 from models import *
 from django.contrib.auth import get_user_model
+from datetime import datetime
 
 # Create your tests here.
 # User Model Tests
@@ -34,3 +35,25 @@ class UserModelTest(TestCase):
         self.assertFalse(self.serviceprovider.is_superuser)
 
 # Booking model tests
+class BookingModelTest(TestCase):
+    def setUp(self):
+        pet_owner = PetOwner.objects.create(user_id=1, name='John Doe')
+        service_provider = ServiceProvider.objects.create(user_id=2, name='Jane Doe')
+        service = Service.objects.create(name='Pet grooming', description='Service for grooming pets', price=20.0)
+        pet = Pet.objects.create(name='Fluffy', species='Dog', breed='Poodle', age=5, gender='Female', owner=pet_owner)
+        date = datetime.now().date()
+        start_time = datetime.now().time()
+        end_time = (datetime.now() + datetime.timedelta(hours=2)).time()
+        booking = Booking.objects.create(pet_owner=pet_owner, service_provider=service_provider, service=service, pet=pet, date=date, start_time=start_time, end_time=end_time)
+
+    def test_booking_str(self):
+        booking = Booking.objects.get(id=1)
+        self.assertEqual(str(booking), "John Doe booked Pet grooming with Jane Doe on " + datetime.now().date().strftime('%Y-%m-%d') + " at " + datetime.now().time().strftime('%H:%M:%S'))
+
+    def test_booking_is_confirmed(self):
+        booking = Booking.objects.get(id=1)
+        self.assertFalse(booking.is_confirmed)
+
+    def test_booking_created_at(self):
+        booking = Booking.objects.get(id=1)
+        self.assertIsNotNone(booking.created_at)

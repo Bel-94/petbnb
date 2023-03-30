@@ -1,14 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import User,AbstractUser
+from django.contrib.auth.models import User,AbstractUser, Group, Permission
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
 
-class User(AbstractUser):
-    is_superuser = models.BooleanField(default=False),
-    is_petowner = models.BooleanField(default=False),
-    is_serviceprovider = models.BooleanField(default=False),
+# class User(AbstractUser):
+#     is_superuser = models.BooleanField(default=False),
+#     is_petowner = models.BooleanField(default=False),
+#     is_serviceprovider = models.BooleanField(default=False),
+#     user_groups = models.ManyToManyField(Group, blank=True, related_name="users")
+#     user_user_permissions = models.ManyToManyField(Permission,blank=True, related_name='user_permissions')
 
 class PetOwner(models.Model):
     pass

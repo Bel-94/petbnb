@@ -26,19 +26,19 @@ class Reservation(models.Model):
     service_type = models.CharField(max_length=255)
     # Other fields related to reservation information
 
-class GroomingService(models.Model):
-    #Extraservices offered for the pets
-    service_type = models.CharField(max_length=255)
+class Service(models.Model):
+    SERVICE_TYPES = (
+        ('grooming', 'Grooming'),
+        ('boarding', 'Boarding'),
+        ('veterinary', 'Veterinary'),
+        # we can add other service types as needed
+    )
+    service_type = models.CharField(max_length=255, choices=SERVICE_TYPES)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.CharField(max_length=255)
-    # Other fields related to grooming service information
-
-class VeterinaryService(models.Model):
-    #For the particular services associated with the medical services for the pets.
-    pet = models.ForeignKey(Pet, on_delete=models.CASCADE)
-    service_type = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    # Other fields related to veterinary service information
+    description = models.TextField()
+    # service_provider = models.ForeignKey(service_provider, on_delete=models.CASCADE)
+    # Other fields related to service information
 
 class Payment(models.Model):
     #Mode of payment for the users, more fields to be added as we progress

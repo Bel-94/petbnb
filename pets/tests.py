@@ -57,3 +57,57 @@ class BookingModelTest(TestCase):
     def test_booking_created_at(self):
         booking = Booking.objects.get(id=1)
         self.assertIsNotNone(booking.created_at)
+
+class LocationModelTest(TestCase):
+    '''In the test for the Location model, I used a class method setUpClass() to set up the required data for the tests to run. This is because each test method in the test class should be independent and not rely on data created in another test method.
+    Using setUpClass() ensures that the data is created only once before any of the test methods are run, which makes the tests faster and more efficient. Additionally, if there are a lot of tests that require the same setup, using setUpClass() can help reduce code duplication.'''
+    @classmethod
+    def setUpTestData(cls):
+        # Set up non-modified objects used by all test methods
+        user = User.objects.create_user(username='johndoe', password='12345')
+        Location.objects.create(user=user, street_address='123 Main St', area='Downtown', county='City County', postal_code='12345')
+
+    def test_street_address_label(self):
+        location = Location.objects.get(id=1)
+        field_label = location._meta.get_field('street_address').verbose_name
+        self.assertEqual(field_label, 'street address')
+
+    def test_area_label(self):
+        location = Location.objects.get(id=1)
+        field_label = location._meta.get_field('area').verbose_name
+        self.assertEqual(field_label, 'area')
+
+    def test_county_label(self):
+        location = Location.objects.get(id=1)
+        field_label = location._meta.get_field('county').verbose_name
+        self.assertEqual(field_label, 'county')
+
+    def test_postal_code_label(self):
+        location = Location.objects.get(id=1)
+        field_label = location._meta.get_field('postal_code').verbose_name
+        self.assertEqual(field_label, 'postal code')
+
+    def test_street_address_max_length(self):
+        location = Location.objects.get(id=1)
+        max_length = location._meta.get_field('street_address').max_length
+        self.assertEqual(max_length, 255)
+
+    def test_area_max_length(self):
+        location = Location.objects.get(id=1)
+        max_length = location._meta.get_field('area').max_length
+        self.assertEqual(max_length, 100)
+
+    def test_county_max_length(self):
+        location = Location.objects.get(id=1)
+        max_length = location._meta.get_field('county').max_length
+        self.assertEqual(max_length, 100)
+
+    def test_postal_code_max_length(self):
+        location = Location.objects.get(id=1)
+        max_length = location._meta.get_field('postal_code').max_length
+        self.assertEqual(max_length, 20)
+
+    def test_object_name_is_address(self):
+        location = Location.objects.get(id=1)
+        expected_object_name = f"{location.street_address}, {location.area}, {location.county}, {location.postal_code}"
+        self.assertEqual(str(location), expected_object_name)

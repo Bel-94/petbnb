@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-
     
 class Pet(models.Model):
     name = models.CharField(max_length=255)
@@ -15,18 +14,6 @@ class Pet(models.Model):
 
     def __str__(self):
         return self.name
-
-class Shelter(models.Model):
-    location = models.CharField(max_length=255)
-    capacity = models.PositiveIntegerField()
-    availability = models.BooleanField(default=True)
-    contact_info = models.CharField(max_length=255)
-
-    class Meta:
-        verbose_name_plural = "Shelters"
-
-    def __str__(self):
-        return self.location
 
 class GroomingService(models.Model):
     name = models.CharField(max_length=255)
@@ -64,18 +51,21 @@ class BoardingService(models.Model):
     def __str__(self):
         return self.name
 
-class Reservation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pet = models.ForeignKey(Pet, on_delete=models.CASCADE)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    service = models.CharField(max_length=255)
+class ServiceProvider(models.Model):
+    name = models.CharField(max_length=255)
+    GroomingService = models.ForeignKey(GroomingService, on_delete=models.CASCADE)
+    VeterinaryService = models.ForeignKey(VeterinaryService, on_delete=models.CASCADE)
+    BoardingService = models.ForeignKey(BoardingService, on_delete=models.CASCADE)
+    # location = models.CharField(max_length=255)  (Should be a foreignKey)
+    capacity = models.PositiveIntegerField()
+    availability = models.BooleanField(default=True)
+    contact_info = models.CharField(max_length=255)
 
     class Meta:
-        verbose_name_plural = "Reservations"
+        verbose_name_plural = "ServiceProviders"
 
     def __str__(self):
-        return f"{self.user} - {self.pet} - {self.service}"
+        return self.location
 
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -87,14 +77,3 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.transaction_amount}"
-
-class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField()
-    comment = models.TextField()
-
-    class Meta:
-        verbose_name_plural = "Reviews"
-
-    def __str__(self):
-        return f"{self.user} - {self.rating}"

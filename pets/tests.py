@@ -138,7 +138,7 @@ class UserModelTest(TestCase):
 # Booking model tests
 class BookingModelTest(TestCase):
     def setUp(self):
-        pet_owner = PetOwner.objects.create(user_id=1, name='John Doe')
+        pet_owner = User.objects.create(user_id=1, name='John Doe')
         service_provider = ServiceProvider.objects.create(user_id=2, name='Jane Doe')
         service = Service.objects.create(name='Pet grooming', description='Service for grooming pets', price=20.0)
         pet = Pet.objects.create(name='Fluffy', species='Dog', breed='Poodle', age=5, gender='Female', owner=pet_owner)

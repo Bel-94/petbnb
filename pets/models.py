@@ -24,8 +24,14 @@ class Pet(models.Model):
 
     def __str__(self):
         return self.name
+    
+'''create a parent model called "Service" and make the three models inherit from it using Django's Multi-table inheritance. 
+Then, you can modify the "Booking" model to use the parent "Service" model instead of the current "Service" foreign key.''' 
 
-class GroomingService(models.Model):
+class Service(models.Model):
+    pass
+
+class GroomingService(Service):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.CharField(max_length=255)
@@ -37,7 +43,7 @@ class GroomingService(models.Model):
     def __str__(self):
         return self.name
 
-class VeterinaryService(models.Model):
+class VeterinaryService(Service):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.CharField(max_length=255)
@@ -49,7 +55,7 @@ class VeterinaryService(models.Model):
     def __str__(self):
         return self.name
 
-class BoardingService(models.Model):
+class BoardingService(Service):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.CharField(max_length=255)

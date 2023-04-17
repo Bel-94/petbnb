@@ -88,13 +88,13 @@ class Payment(models.Model):
     def __str__(self):
         return f"{self.user} - {self.transaction_amount}"
 
-class User(AbstractUser):
-    is_superuser = models.BooleanField(default=False),
-    is_petowner = models.BooleanField(default=False),
-    is_serviceprovider = models.BooleanField(default=False),
+# class User(AbstractUser):
+#     is_superuser = models.BooleanField(default=False),
+#     is_petowner = models.BooleanField(default=False),
+#     is_serviceprovider = models.BooleanField(default=False),
 
 class Booking(models.Model):
-    pet_owner = models.ForeignKey(PetOwner, on_delete=models.CASCADE)
+    pet_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     service_provider = models.ForeignKey(ServiceProvider, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE)

@@ -12,12 +12,12 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 #     user_groups = models.ManyToManyField(Group, blank=True, related_name="users")
 #     user_user_permissions = models.ManyToManyField(Permission,blank=True, related_name='user_permissions')
 class Pet(models.Model):
-    name = models.CharField(max_length=255)
-    category = models.CharField(max_length=255)
-    breed = models.CharField(max_length=255)
-    age = models.PositiveIntegerField()
-    gender = models.CharField(max_length=10)
-    medical_history = models.TextField()
+    name = models.CharField(max_length=255, default='unknown')
+    category = models.CharField(max_length=255, default='unknown')
+    breed = models.CharField(max_length=255, default='')
+    age = models.PositiveIntegerField(default=0)
+    gender = models.CharField(max_length=10, default='unknown')
+    medical_history = models.TextField(default='')
 
     class Meta:
         verbose_name_plural = "Pets"
@@ -68,14 +68,14 @@ class BoardingService(Service):
         return self.name
 
 class ServiceProvider(models.Model):
-    name = models.CharField(max_length=255)
-    GroomingService = models.ForeignKey(GroomingService, on_delete=models.CASCADE)
-    VeterinaryService = models.ForeignKey(VeterinaryService, on_delete=models.CASCADE)
-    BoardingService = models.ForeignKey(BoardingService, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, default='')
+    GroomingService = models.ForeignKey(GroomingService, on_delete=models.CASCADE, default=None)
+    VeterinaryService = models.ForeignKey(VeterinaryService, on_delete=models.CASCADE, default=None)
+    BoardingService = models.ForeignKey(BoardingService, on_delete=models.CASCADE, default=None)
     # location = models.CharField(max_length=255)  (Should be a foreignKey)
-    capacity = models.PositiveIntegerField()
+    capacity = models.PositiveIntegerField(default=0)
     availability = models.BooleanField(default=True)
-    contact_info = models.CharField(max_length=255)
+    contact_info = models.CharField(max_length=255, default='example@example.com')
 
     class Meta:
         verbose_name_plural = "ServiceProviders"

@@ -3,5 +3,5 @@ from django.http.response import HttpResponse, Http404
 
 
 # Create your views here.
-def Home(request):
+def Index(request):
     return HttpResponse("Welcome to Petbnb!")
